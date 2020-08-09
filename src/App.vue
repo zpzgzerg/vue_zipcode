@@ -1,28 +1,43 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ZipcodeForm :common="common" :currentPage="common.currentPage" @syncData="syncData"></ZipcodeForm>
+    <ZipcodeView :jusos="jusos"></ZipcodeView>
+    <PagingView :common="common" @refPage="refPage"></PagingView>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ZipcodeForm from "@/components/ZipcodeForm";
+import ZipcodeView from "@/views/ZipcodeView";
+import PagingView from '@/views/PagingView';
 
 export default {
-  name: 'App',
+  data() {
+    return {
+      common: {
+        totalCount: "0",
+        currentPage: "1",
+        countPerPage: "5",
+      },
+      jusos: [],
+    }
+  },
+  methods: {
+    syncData(response) {
+      this.common = response.common;
+      this.jusos = response.juso;
+    },
+    refPage(response) {
+      this.common.currentPage = response;
+    },
+  },
   components: {
-    HelloWorld
+    ZipcodeForm,
+    ZipcodeView,
+    PagingView,
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
